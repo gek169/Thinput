@@ -348,6 +348,8 @@ The types used by thinput.h (THINPUT_S, THINPUT_L...) are simply DEFINEs so you 
 
 * change stdint.h and stdlib.h includes in thinput.h to cstdint and cstdlib for C++ projects.
 
+* Add a few blank entries into your input arrays for usage as storage locations by the bytecode, preferably at the beginning.
+
 ### Other tips
 
 * Debug the library by defining DEFAULT_NO_RETURN before including it. The ordinary behavior of an unknown opcode is to quit the interpreter but when fuzz testing the input/instructions you need it to process invalid opcodes.
