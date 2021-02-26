@@ -9,10 +9,10 @@ with every input able to be mapped to every single action, entirely editable at 
 
 # How do I use the library?
 
-See thinput_tester if you want to see the input mapper in action.
+See thinput_tester.c if you want to see the input mapper in action.
 
 ```c
-gcc thinput_tester -o tinput
+gcc thinput_tester.c -o tinput
 ```
 
 use the `-inp` flag followed by a series of integers to simulate the output of your favorite input-reading library, like
