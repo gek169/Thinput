@@ -1,11 +1,87 @@
 
 # An uber-portable input processing library that's perfect for you and the end user
 
-Thinput is a tiny C99, header-only, static inlined, single-function solution for processing received user inputs to achieve
+Thinput is a tiny C99 (or C89), header-only, static inlined (in C99), single-function solution for processing received user inputs to achieve
 runtime keymapping, which embeds quickly and easily into your application.
 
-Never release programs with "debug keyboard layouts" again! Every program you write will feature full keyboard/button/joystick mapping,
+Never release programs with "debug keyboard layouts only" again! Every program you write will feature full keyboard/button/joystick mapping,
 with every input able to be mapped to every single action, entirely editable at runtime.
+
+# How does it work?
+
+Thinput is a very small bytecode specifically designed for processing user inputs. It has an extremely small instruction set.
+
+Using the library, if all the input readings are read into raw_inputs, it should be possible to create virtually any key/button/action
+
+mapping using a custom series of opcodes.
+
+# Why would I use this library instead of another one?
+
+1) Ease of use. You can write debug key/gamepad/mouse bindings (using the COPY_ALL instruction) and know that they can be changed at runtime. This *IS* a permanent solution.
+
+2) Portability. It's pure C, it's a single header file, and it's extremely trivial to convert it to other languages.
+
+3) Power. Thinput's bytecode is a miniature RISC bytecode (Without jump) enabling far more key/button/mouse/whatever mapping possibilities than ad-hoc solutions.
+
+4) Speed. The bytecode has a predictable execution going from the end of instructions to the beginning, and it executes very fast even on extremely slow embedded systems.
+
+5) Memory footprint. Thinput does not add much memory usage per keybinding. Let's lay it out...
+
+You need two arrays holding THINPUT_S variables (probably either uint16_t or uint8_t) of size THINPUT_MAX_INPUTS,
+
+that's either THINPUT_MAX_INPUTS * 4 or THINPUT_MAX_INPUTS * 2 bytes for the input arrays, depending on whether THINPUT_S is uint16_t or uint8_t
+
+You need an array to hold the key binding instructions. The recommended behavior for modern systems
+is to allocate a fixed-size array at load time, just for memory safety, but it is perfectly possible 
+to dynamically allocate the instruction array based on the size of keybind.bin, without any speed loss (Remember to free() it!)
+
+This means the keybind mapping instructions can be *exactly* as complicated as they need to be to represent the user's desired key binding.
+
+"Pay for what you use."
+
+Thinput also has a stack footprint of...
+	3*sizeof(THINPUT_S) + 2 * sizeof(THINPUT_L) + 1 + 1 * sizeof(pointer) for its member variables.
+	3*sizeof(pointer) for its calling arguments
+
+For a game with 256 possible inputs using uint16_t which allocates a dynamic buffer for the instruction opcode,
+with a debug instruction 
+on a computer with 32 bit pointers...
+The maximum memory footprint of the entire library is...
+
+```
+256 * 2 * 2 		(1024) + (Input arrays)
+2 * 2 				(4)  (Instructions, [0] = 13, [1] = 0)
+3 * 4 				(12) (Calling arguments)
+3*2 + 2*4 + 1 + 4 	(19)(Member variables)
+					1059 bytes.
+```
+
+If you pre-allocate a buffer for the entire instruction opcode table and you allow up to 65536 THINPUT_S's to comprise the instruction set...
+
+```
+1055 bytes + 
+65536 * 2 (128 kibibytes)
+=
+132127 bytes
+```
+
+You can consider this a "worst case scenario"
+
+For an embedded platform using THINPUT_S = uint8_t with 16 bit pointers...
+
+```
+256 * 1 * 2 		(512) + (Input arrays)
+2 * 1 				(2)  (Instructions, [0] = 13, [1] = 0)
+3 * 2 				(6) (Calling arguments)
+3*1 + 2*2 + 1 + 2 	(10)(Member variables)
+					530 bytes for the debug keybinding
+
+for a pre-allocated buffer large enough to hold 8k THINPUT_S's for the instructions to have a very flexib
+
+530 - 2 	(528)
+8192 * 1 	(8192)
+			8720 bytes for a pre-allocated buffer.
+```
 
 # How do I use the library?
 
@@ -47,9 +123,10 @@ change these statements to make the library use arbitrary sizes of unsigned inte
 If you are going to use thinput for mouse input or the like, it is recommended you use 16 bit unsigned integers.
 
 ```c
+//#define THINPUT_C89
 #include "thinput.h"
 ```
-Include the library, which builds the static inline function.
+Include the library, which builds the static inline function. if you're using C89, then uncomment the define.
 
 ```c
 THINPUT_S raw_inputs[THINPUT_MAX_INPUTS];
@@ -238,7 +315,7 @@ It's not trivial, but the bytecode is powerful enough to give you all the basics
 
 Even if you do not create a gui, it will be trivial for anyone to write one for your game/program/demo. 
 
-Include documentation of the settings.bin bytecode with your program.
+Include documentation of the keybind.bin bytecode with your program.
 
 Technical users will be able to define their own maps with a hex editor, if nothing else.
 
@@ -273,7 +350,7 @@ The types used by thinput.h (THINPUT_S, THINPUT_L...) are simply DEFINEs so you 
 
 ### Other tips
 
-* Debug the library by defining DEFAULT_NO_RETURN before including it. The ordinary behavior of an unknown opcode is to quit the interpreter but when fuzz testinging the input/instructions you need it to process invalid opcodes.
+* Debug the library by defining DEFAULT_NO_RETURN before including it. The ordinary behavior of an unknown opcode is to quit the interpreter but when fuzz testing the input/instructions you need it to process invalid opcodes.
 
 * Don't add goto or jump to the opcode table, it will cause the execution of thinput_handle to be non-predictable and allow malformed keybindings to cause the program to hang.
 
