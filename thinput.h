@@ -1,4 +1,5 @@
 #include<stdint.h>
+#include<stdlib.h>
 #define THINPUT_BYTE uint8_t
 
 #ifndef THINPUT_S
@@ -93,6 +94,9 @@
 #define THINPUT_OP_SKIP_GREATER_EXTRA 2
 //3s, opcode, out1, out2
 //skip the next instruction if out1 is greater than out2
+#define THINPUT_OP_COPY_ALL 13
+//Copy the entire in to the out.
+
 
 #define THINPUT_OP_NOTHING THINPUT_S_MAX
 
@@ -120,6 +124,9 @@ static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S*
 	for(;ins!= THINPUT_OP_TERMINATE;){
 		THINPUT_GET_BYTE(ins);
 		switch(ins){
+			case THINPUT_OP_COPY_ALL:
+				memcpy(out,in,THINPUT_MAX_INPUTS * sizeof(THINPUT_S));
+			break;
 			case THINPUT_OP_SKIP_GREATER_CONSTANT:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
