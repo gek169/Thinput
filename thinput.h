@@ -3,7 +3,6 @@
 #define THINPUT_BYTE uint8_t
 
 #ifndef THINPUT_S
-#define THINPUT_USER_NEEDS_WARNING
 #define THINPUT_S uint8_t
 #define THINPUT_L uint16_t
 #define THINPUT_S_SHIFT 8
@@ -33,7 +32,7 @@
 #endif
 
 #ifndef THINPUT_INS_SIZE
-#error "Thinput requires the size of your input buffer."
+#error "Thinput requires the size of your instruction buffer."
 #endif
 
 #define THINPUT_MAX_OP_EXTRA 2
