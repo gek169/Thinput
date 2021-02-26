@@ -42,7 +42,7 @@ These are *NOT* passed to thinput_handle as arguments to optimize the speed of e
 #define THINPUT_L_MAX 4294967295
 ```
 This code optionally changes thinput to use 16 bit unsigned integers. You should be able to deduce how you could
-change these statements to make the library.
+change these statements to make the library use arbitrary sizes of unsigned integers.
 
 If you are going to use thinput for mouse input or the like, it is recommended you use 16 bit unsigned integers.
 
