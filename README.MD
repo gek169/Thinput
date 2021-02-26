@@ -40,8 +40,8 @@ This means the keybind mapping instructions can be *exactly* as complicated as t
 "Pay for what you use."
 
 Thinput also has a stack footprint of...
-	3*sizeof(THINPUT_S) + 2 * sizeof(THINPUT_L) + 1 + 1 * sizeof(pointer) for its member variables.
-	3*sizeof(pointer) for its calling arguments
+	3 * sizeof(THINPUT_S) + 2 * sizeof(THINPUT_L) + 1 + 1 * sizeof(pointer) for its member variables.
+	3 * sizeof(pointer) for its calling arguments
 
 For a game with 256 possible inputs using uint16_t which allocates a dynamic buffer for the instruction opcode,
 with a debug instruction 
@@ -76,7 +76,7 @@ For an embedded platform using THINPUT_S = uint8_t with 16 bit pointers...
 3*1 + 2*2 + 1 + 2 	(10)(Member variables)
 					530 bytes for the debug keybinding
 
-for a pre-allocated buffer large enough to hold 8k THINPUT_S's for the instructions to have a very flexib
+for a pre-allocated buffer large enough to hold 8k THINPUT_S's for the instructions, which is reasonable for an embedded platform
 
 530 - 2 	(528)
 8192 * 1 	(8192)
