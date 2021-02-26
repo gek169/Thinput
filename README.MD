@@ -132,6 +132,27 @@ case SDL_KEYDOWN:
 		break;
 	}
 	break;
+case SDL_KEYUP:
+	switch (evt.key.keysym.sym) {
+	case SDLK_UP:
+		raw_inputs[0] = 0;
+		break;
+	case SDLK_DOWN:
+		raw_inputs[1] = 0;
+		break;
+	case SDLK_LEFT:
+		raw_inputs[2] = 0;
+		break;
+	case SDLK_RIGHT:
+		raw_inputs[3] = 0;
+		break;
+	case SDLK_ESCAPE:
+	case SDLK_q:
+		raw_inputs[4] = 0;
+	default:
+		break;
+	}
+	break;
 case SDL_QUIT:
 	isRunning = 0;
 	break;
