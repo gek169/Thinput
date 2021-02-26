@@ -260,8 +260,8 @@ static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S*
 			default://invalid opcode
 			return 0;
 #else
-			case THINPUT_OP_TERMINATE:
-			return 0;
+//			case THINPUT_OP_TERMINATE:
+//			return 0;
 			default: break;
 #endif
 		}

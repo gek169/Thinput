@@ -19,6 +19,7 @@
 THINPUT_S raw_inputs[THINPUT_MAX_INPUTS];
 THINPUT_S processed_inputs[THINPUT_MAX_INPUTS];
 THINPUT_S instructions[0x10000];
+THINPUT_S instructions_small[0x10];
 
 int main(int argc, char** argv){
 	srand(time(NULL));
@@ -51,10 +52,16 @@ int main(int argc, char** argv){
 	if(dorandom){
 		for(int i = 0; i < THINPUT_MAX_INPUTS; i++)
 			raw_inputs[i] = rand();
-		for(int i = 0; i < THINPUT_INS_SIZE; i++)
-				instructions[i] = rand();
+		for(int i = 0; i < 0x100; i++)
+				instructions_small[i] = rand();
+		instructions_small[0xF] = 0;
+		instructions_small[0xE] = 0;
+		instructions_small[0xD] = 0;
 	}
-	thinput_handle(raw_inputs, processed_inputs, instructions);
+	if(dorandom)
+		thinput_handle(raw_inputs, processed_inputs, instructions_small);
+	else
+		thinput_handle(raw_inputs, processed_inputs, instructions);
 	for(int i = 0; i < nvalid; i++)
 		printf("raw input %d is %d\n",i,(int)raw_inputs[i]);
 	for(int i = 0; i < nvalid; i++)
