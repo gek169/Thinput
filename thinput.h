@@ -115,6 +115,9 @@
 #define THINPUT_SKIPCHECK() if(skipflag){skipflag = 0; break;}
 static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S* code){
 	THINPUT_S* code_max = code + THINPUT_INS_SIZE-1;
+#ifdef DEFAULT_NO_RETURN
+	int i = 0;
+#endif
 	THINPUT_S ins = THINPUT_OP_NOTHING;
 	THINPUT_S insdata[THINPUT_MAX_OP_EXTRA];
 	THINPUT_L treg1; //Multiply and add register.
@@ -122,6 +125,9 @@ static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S*
 	THINPUT_BYTE skipflag = 0;
 	for(;ins!= THINPUT_OP_TERMINATE;){
 		THINPUT_GET_BYTE(ins);
+#ifdef DEFAULT_NO_RETURN
+		printf("\nreached %d",i);
+#endif		
 		switch(ins){
 			case THINPUT_OP_COPY_ALL:
 				memcpy(out,in,THINPUT_MAX_INPUTS * sizeof(THINPUT_S));
@@ -260,10 +266,13 @@ static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S*
 			default://invalid opcode
 			return 0;
 #else
-//			case THINPUT_OP_TERMINATE:
-//			return 0;
+//We are debugging the library.
+			case 0:return 0;
 			default: break;
 #endif
 		}
+#ifdef DEFAULT_NO_RETURN
+		i++;
+#endif
 	}
 }

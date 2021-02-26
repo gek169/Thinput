@@ -273,6 +273,8 @@ The types used by thinput.h (THINPUT_S, THINPUT_L...) are simply DEFINEs so you 
 
 ### Other tips
 
+* Debug the library by defining DEFAULT_NO_RETURN before including it. The ordinary behavior of an unknown opcode is to quit the interpreter but when fuzz testinging the input/instructions you need it to process invalid opcodes.
+
 * Don't add goto or jump to the opcode table, it will cause the execution of thinput_handle to be non-predictable and allow malformed keybindings to cause the program to hang.
 
 * Append THINPUT_MAX_OP_EXTRA + 1 null bytes to the end of your instructions array if you don't want to allocate an array large enough to hold the maximum number of instructions.

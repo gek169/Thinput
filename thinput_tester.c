@@ -18,8 +18,8 @@
 
 THINPUT_S raw_inputs[THINPUT_MAX_INPUTS];
 THINPUT_S processed_inputs[THINPUT_MAX_INPUTS];
-THINPUT_S instructions[0x10000];
-THINPUT_S instructions_small[0x10];
+THINPUT_S instructions[THINPUT_INS_SIZE];
+THINPUT_S* instructions_small = NULL;
 
 int main(int argc, char** argv){
 	srand(time(NULL));
@@ -47,12 +47,15 @@ int main(int argc, char** argv){
 		else
 			instructions[i-last_off] = (THINPUT_S)atoi(argv[i]);
 	}
+	//puts("\nF\n");
 	for(int i = 0; i < THINPUT_MAX_INPUTS; i++)
 		processed_inputs[i] = 0;
 	if(dorandom){
 		for(int i = 0; i < THINPUT_MAX_INPUTS; i++)
 			raw_inputs[i] = rand();
-		for(int i = 0; i < 0x100; i++)
+		instructions_small = (THINPUT_S*)calloc(1,16);
+		if(!instructions_small)exit(1);
+		for(int i = 0; i < 0x10; i++)
 				instructions_small[i] = rand();
 		instructions_small[0xF] = 0;
 		instructions_small[0xE] = 0;
@@ -67,5 +70,7 @@ int main(int argc, char** argv){
 	for(int i = 0; i < nvalid; i++)
 		printf("Processed input %d is %d\n",i,(int)processed_inputs[i]);
 	printf("THINPUT_S_MAX is %d", THINPUT_S_MAX);
+	if(instructions_small)
+		free(instructions_small);
 	return 0;
 }
