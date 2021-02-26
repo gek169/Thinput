@@ -167,7 +167,7 @@ instructions[0] = 13;
 instructions[1] = 0;
 ```
 
-And change it to a function that loads a file into the instructions array
+... to a function that loads a file into the instructions array
 
 ```c
 FILE* f;
