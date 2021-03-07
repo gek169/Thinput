@@ -12,10 +12,7 @@
 #define THINPUT_S_MAX 65535
 #define THINPUT_L_MAX 4294967295
 */
-/*used for fuzzing*/
-#define DEFAULT_NO_RETURN
-/*Used for testing C89 support*/
-//#define THINPUT_C89
+
 #include "thinput.h"
 
 THINPUT_S raw_inputs[THINPUT_MAX_INPUTS];
