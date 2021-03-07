@@ -28,11 +28,11 @@
 
 #ifndef THINPUT_MAX_INPUTS
 #define THINPUT_MAX_INPUTS 256
-#warning "THINPUT_MAX_INPUTS has been set to 256."
+#warning "THINPUT_MAX_INPUTS has been set to 256- the maximum number of inputs for a THINPUT_S = uint8_t"
 #endif
 
 #ifndef THINPUT_INS_SIZE
-#error "Thinput requires the size of your instruction buffer."
+#error "Thinput requires the maximum size of your instruction buffer for its safety checking."
 #endif
 
 #define THINPUT_MAX_OP_EXTRA 2
@@ -133,12 +133,269 @@ skip the next instruction if out1 is greater than out2
 #define THINPUT_READ_DATA(index){\
 	THINPUT_GET_BYTE(insdata[index])\
 }
-#define THINPUT_SKIPCHECK() if(skipflag){skipflag = 0; break;}
-#ifdef THINPUT_C89
-THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S* code){
-#else
-static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S* code){
-#endif
+#define THINPUT_SKIPCHECK() if(skipflag){skipflag = 0; DISPATCH();}
+
+static THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S* code){
+	static void* dispatch_table[] = { //MASH THAT PAGE DOWN BUTTON, IT'S A LONG RIDE!!!
+	        &&do_THINPUT_OP_TERMINATE,		//Starting at LINE 140
+			&&do_THINPUT_OP_COPY,
+			&&do_THINPUT_OP_COPY_BACK,
+			&&do_THINPUT_OP_WRITE,
+			&&do_THINPUT_OP_WRITE_BACK,
+			&&do_THINPUT_OP_MULT_CONSTANT,
+			&&do_THINPUT_OP_ADD_CONSTANT,
+			&&do_THINPUT_OP_MULT,
+			&&do_THINPUT_OP_ADD,
+			&&do_THINPUT_OP_SUB_CONSTANT,
+			&&do_THINPUT_OP_SUB,
+			&&do_THINPUT_OP_SKIP_GREATER_CONSTANT,
+			&&do_THINPUT_OP_SKIP_GREATER,
+			&&do_THINPUT_OP_COPY_ALL,
+			&&do_THINPUT_OP_TERMINATE, // For the rest of all possible bytes...
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+			&&do_THINPUT_OP_TERMINATE, //
+	        };
+	    #define DISPATCH() THINPUT_GET_BYTE(ins); goto *dispatch_table[ins&255]
 #ifdef DEFAULT_NO_RETURN
 	int i = 0;
 #endif
@@ -148,39 +405,37 @@ static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S*
 	THINPUT_L treg2; /*Multiply and add register.*/
 	THINPUT_BYTE skipflag = 0;
 	THINPUT_S* code_max = code + THINPUT_INS_SIZE-1;
-	for(;ins!= THINPUT_OP_TERMINATE;){
-		THINPUT_GET_BYTE(ins);
-#ifdef DEFAULT_NO_RETURN
-		printf("\nreached %d",i);
-#endif		
-		switch(ins){
-			case THINPUT_OP_COPY_ALL:
+	DISPATCH();
+	{
+			
+		{
+			do_THINPUT_OP_COPY_ALL:
 				memcpy(out,in,THINPUT_MAX_INPUTS * sizeof(THINPUT_S));
-			break;
-			case THINPUT_OP_SKIP_GREATER_CONSTANT:
+			DISPATCH();
+			do_THINPUT_OP_SKIP_GREATER_CONSTANT:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
 				THINPUT_SKIPCHECK();
 				THINPUT_BAD(insdata[0] >= THINPUT_MAX_INPUTS)
 				if(out[insdata[0]] > insdata[1]) {skipflag = 1;}
-			break;
-			case THINPUT_OP_SKIP_GREATER:
+			DISPATCH();
+			do_THINPUT_OP_SKIP_GREATER:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
 				THINPUT_SKIPCHECK();
 				THINPUT_BAD(insdata[0] >= THINPUT_MAX_INPUTS)
 				THINPUT_BAD(insdata[1] >= THINPUT_MAX_INPUTS)
 				if(out[insdata[0]] > out[insdata[1]]) skipflag = 1;
-			break;
-			case THINPUT_OP_COPY_BACK:
+			DISPATCH();
+			do_THINPUT_OP_COPY_BACK:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
 				THINPUT_SKIPCHECK();
 				THINPUT_BAD(insdata[0] >= THINPUT_MAX_INPUTS)
 				THINPUT_BAD(insdata[1] >= THINPUT_MAX_INPUTS)
 				in[insdata[0]] =  out[insdata[1]];
-			break;
-			case THINPUT_OP_COPY:
+			DISPATCH();
+			do_THINPUT_OP_COPY:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
 				THINPUT_SKIPCHECK();
@@ -188,24 +443,24 @@ static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S*
 				THINPUT_BAD(insdata[0] >= THINPUT_MAX_INPUTS)
 				THINPUT_BAD(insdata[1] >= THINPUT_MAX_INPUTS)
 				out[insdata[1]] = in[insdata[0]];
-			break;
-			case THINPUT_OP_WRITE:
+			DISPATCH();
+			do_THINPUT_OP_WRITE:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
 				THINPUT_SKIPCHECK();
 
 				THINPUT_BAD(insdata[0] >= THINPUT_MAX_INPUTS)
 				out[insdata[0]] = insdata[1];
-			break;
-			case THINPUT_OP_WRITE_BACK:
+			DISPATCH();
+			do_THINPUT_OP_WRITE_BACK:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
 				THINPUT_SKIPCHECK();
 
 				THINPUT_BAD(insdata[0] >= THINPUT_MAX_INPUTS)
 				in[insdata[0]] = insdata[1];
-			break;
-			case THINPUT_OP_MULT_CONSTANT:
+			DISPATCH();
+			do_THINPUT_OP_MULT_CONSTANT:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
 				THINPUT_SKIPCHECK();
@@ -217,8 +472,8 @@ static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S*
 				treg1 = treg1>>THINPUT_S_SHIFT;
 				if(treg1 > THINPUT_S_MAX){treg1 = THINPUT_S_MAX;}
 				out[insdata[0]] = treg1;
-			break;
-			case THINPUT_OP_ADD_CONSTANT:
+			DISPATCH();
+			do_THINPUT_OP_ADD_CONSTANT:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
 				THINPUT_SKIPCHECK();
@@ -229,8 +484,8 @@ static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S*
 				treg1 = treg1 + treg2;
 				if(treg1 > THINPUT_S_MAX)treg1 = THINPUT_S_MAX;
 				out[insdata[0]] = treg1;
-			break;
-			case THINPUT_OP_SUB_CONSTANT:
+			DISPATCH();
+			do_THINPUT_OP_SUB_CONSTANT:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
 				THINPUT_SKIPCHECK();
@@ -243,9 +498,9 @@ static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S*
 				else
 					treg1 = treg2 - treg1;
 				out[insdata[0]] = treg1;
-			break;
+			DISPATCH();
 
-			case THINPUT_OP_MULT:
+			do_THINPUT_OP_MULT:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
 				THINPUT_SKIPCHECK();
@@ -258,8 +513,8 @@ static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S*
 				treg1 = treg1>>(THINPUT_S_SHIFT);
 				if(treg1 > THINPUT_S_MAX){treg1 = THINPUT_S_MAX;}
 				out[insdata[0]] = treg1;
-			break;
-			case THINPUT_OP_ADD:
+			DISPATCH();
+			do_THINPUT_OP_ADD:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
 				THINPUT_SKIPCHECK();
@@ -271,8 +526,8 @@ static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S*
 				treg1 = treg1 + treg2;
 				if(treg1 > THINPUT_S_MAX)treg1 = THINPUT_S_MAX;
 				out[insdata[0]] = treg1;
-			break;
-			case THINPUT_OP_SUB:
+			DISPATCH();
+			do_THINPUT_OP_SUB:
 				THINPUT_READ_DATA(0);
 				THINPUT_READ_DATA(1);
 				THINPUT_SKIPCHECK();
@@ -286,15 +541,8 @@ static inline THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S*
 				else
 					treg1 = treg2 - treg1;
 				out[insdata[0]] = treg1;
-			break;
-#ifndef DEFAULT_NO_RETURN
-			default:
-			return 0;
-#else
-/*We are debugging the library.*/
-			case 0:return 0;
-			default: break;
-#endif
+			DISPATCH();
+			do_THINPUT_OP_TERMINATE:return 0;
 		}
 #ifdef DEFAULT_NO_RETURN
 		i++;
