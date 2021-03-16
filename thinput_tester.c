@@ -4,6 +4,8 @@
 #include <time.h>
 #define THINPUT_MAX_INPUTS 127
 #define THINPUT_INS_SIZE 0x10000
+//Faster execution speed.
+#define THINPUT_NO_SAFETY_CHECKS
 /*Optional defines, but if you define one, you must define them all.*/
 /*
 #define THINPUT_S uint16_t
