@@ -137,13 +137,6 @@ skip the next instruction if out1 is greater than out2
 #define THINPUT_SKIPCHECK() if(skipflag){skipflag = 0; DISPATCH();}
 
 static THINPUT_S thinput_handle(THINPUT_S* in, THINPUT_S* out, THINPUT_S* code){
-	static void* dispatch_table[] = { /*MASH THAT PAGE DOWN BUTTON, IT'S A LONG RIDE!!!*/
-	        &&do_THINPUT_OP_TERMINATE,		/*Starting at LINE 140*/
-			&&do_THINPUT_OP_COPY,
-			&&do_THINPUT_OP_COPY_BACK,
-			
-			&&do_THINPUT_OP_TERMINATE,  /*For the rest of all possible bytes...*/
-	        };
 	    /*#define DISPATCH() THINPUT_GET_BYTE(ins); goto *dispatch_table[ins&255]*/
 	    #define DISPATCH() THINPUT_GET_BYTE(ins); switch(ins){\
 	    	case 0: default: goto do_THINPUT_OP_TERMINATE;\
